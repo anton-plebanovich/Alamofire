@@ -1192,11 +1192,10 @@ extension Session: RequestDelegate {
         rootQueue.async {
             let retry: () -> Void = {
                 guard !request.isCancelled else { return }
-
-                request.prepareForRetry()
                 self.perform(request)
             }
 
+            request.prepareForRetry()
             if let retryDelay = timeDelay {
                 self.rootQueue.after(retryDelay) { retry() }
             } else {
